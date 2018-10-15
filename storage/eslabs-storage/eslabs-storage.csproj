@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Google.Cloud.Storage.V1" Version="*"/>
+    <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.1.0"/>
+  </ItemGroup>
+  <ItemGroup>
+    <None Update="client_secret.json" CopyToOutputDirectory="Always"/>
+  </ItemGroup>
+</Project>
