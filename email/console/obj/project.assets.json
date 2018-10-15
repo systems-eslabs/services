@@ -670,11 +670,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/home/kavita/eslabsroot/services/email/console/email-bot.csproj",
+      "projectUniqueName": "/home/kavita/eslabsroot/email-bot/console/email-bot.csproj",
       "projectName": "email-bot",
-      "projectPath": "/home/kavita/eslabsroot/services/email/console/email-bot.csproj",
+      "projectPath": "/home/kavita/eslabsroot/email-bot/console/email-bot.csproj",
       "packagesPath": "/home/kavita/.nuget/packages/",
-      "outputPath": "/home/kavita/eslabsroot/services/email/console/obj/",
+      "outputPath": "/home/kavita/eslabsroot/email-bot/console/obj/",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "/usr/share/dotnet/sdk/NuGetFallbackFolder"
@@ -704,7 +704,7 @@
         "dependencies": {
           "Microsoft.NETCore.App": {
             "target": "Package",
-            "version": "2.0.0",
+            "version": "[2.0.0, )",
             "autoReferenced": true
           }
         },

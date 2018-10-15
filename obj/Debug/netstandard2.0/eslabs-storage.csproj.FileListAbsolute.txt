@@ -1,8 +1,0 @@
-/home/kavita/EM/eslabs-storage/eslabs-storage/obj/Debug/netstandard2.0/eslabs-storage.csproj.CoreCompileInputs.cache
-/home/kavita/EM/eslabs-storage/eslabs-storage/obj/Debug/netstandard2.0/eslabs-storage.AssemblyInfoInputs.cache
-/home/kavita/EM/eslabs-storage/eslabs-storage/obj/Debug/netstandard2.0/eslabs-storage.AssemblyInfo.cs
-/home/kavita/EM/eslabs-storage/eslabs-storage/bin/Debug/netstandard2.0/eslabs-storage.deps.json
-/home/kavita/EM/eslabs-storage/eslabs-storage/bin/Debug/netstandard2.0/eslabs-storage.dll
-/home/kavita/EM/eslabs-storage/eslabs-storage/bin/Debug/netstandard2.0/eslabs-storage.pdb
-/home/kavita/EM/eslabs-storage/eslabs-storage/obj/Debug/netstandard2.0/eslabs-storage.dll
-/home/kavita/EM/eslabs-storage/eslabs-storage/obj/Debug/netstandard2.0/eslabs-storage.pdb
