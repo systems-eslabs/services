@@ -3,10 +3,13 @@
     <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Google.Cloud.Storage.V1" Version="*"/>
-    <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.1.0"/>
+    <PackageReference Include="Google.Cloud.Storage.V1" Version="*" />
+    <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.1.0" />
   </ItemGroup>
   <ItemGroup>
-    <None Update="client_secret.json" CopyToOutputDirectory="Always"/>
+    <None Update="client_secret.json" CopyToOutputDirectory="Always" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\common\common.csproj" />
   </ItemGroup>
 </Project>
