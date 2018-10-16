@@ -283,12 +283,12 @@ namespace EmailService
             byte[] attachmentData = CommonFunctions.FromBase64ForString(attachPart.Data);
 
 
-            StorageService.Storage storageService = new StorageService.Storage();
+            StorageService.Storage storageService = new StorageService.Storage("Email/"+mailId);
 
             EStorageRequest request = new EStorageRequest{
                 FileName = filename,
-                BucketName = "elabs",
-                ProjectName = "enbloc",
+                BucketName = "gmail",
+                ProjectName = "elabs",
                 isSaveLocal = true
             };
 
