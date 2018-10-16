@@ -32,7 +32,6 @@ namespace StorageService
             {
                 baseObject.Success = false;
                 baseObject.Message = "Error Occured!";
-                baseObject.Exception = ex;
             }
             return baseObject;
         }
@@ -65,7 +64,6 @@ namespace StorageService
             {
                 baseObject.Success = false;
                 baseObject.Message = "Error Occured!";
-                baseObject.Exception = ex;
             }
             return baseObject;
         }

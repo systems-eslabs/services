@@ -3,7 +3,7 @@ using Newtonsoft.Json;
 using System.Collections.Generic;
 
 
-namespace mailLibrary
+namespace EmailService
 {
     public static class Config
     {

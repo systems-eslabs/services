@@ -1,6 +1,6 @@
 using System;
 
-namespace mailLibrary
+namespace EmailService
 {
     public class EAttachment : EAttachmentRequest
     {

@@ -23,8 +23,6 @@ namespace Common
         /// </summary>
         public bool Success { get; set; }
 
-        public Exception Exception { get; set; }
-
         /// <summary>
         /// Store the data returned by the service
         /// </summary>

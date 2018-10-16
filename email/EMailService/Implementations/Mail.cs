@@ -18,7 +18,7 @@ using Google.Cloud.Storage.V1;
 using Common;
 
 
-namespace mailLibrary
+namespace EmailService
 {
     public class Mail
     {
@@ -106,7 +106,6 @@ namespace mailLibrary
             {
                 baseObject.Success = false;
                 baseObject.Message = "Error Occured.";
-                baseObject.Exception = ex;
             }
             return baseObject;
         }
@@ -167,7 +166,6 @@ namespace mailLibrary
             {
                 baseObject.Success = false;
                 baseObject.Message = "Error Occured.";
-                baseObject.Exception = ex;
 
             }
             return baseObject;
@@ -203,7 +201,6 @@ namespace mailLibrary
             {
                 baseObject.Success = false;
                 baseObject.Message = "Error Occured.";
-                baseObject.Exception = ex;
             }
             return baseObject;
         }
@@ -238,7 +235,6 @@ namespace mailLibrary
             {
                 baseObject.Success = false;
                 baseObject.Message = "Error Occured.";
-                baseObject.Exception = ex;
             }
             return baseObject;
         }
