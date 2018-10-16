@@ -3790,11 +3790,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/home/kavita/EM/eslabs-storage/eslabs-storage/eslabs-storage.csproj",
+      "projectUniqueName": "/home/kavita/eslabsroot/services/storage/eslabs-storage/eslabs-storage.csproj",
       "projectName": "eslabs-storage",
-      "projectPath": "/home/kavita/EM/eslabs-storage/eslabs-storage/eslabs-storage.csproj",
+      "projectPath": "/home/kavita/eslabsroot/services/storage/eslabs-storage/eslabs-storage.csproj",
       "packagesPath": "/home/kavita/.nuget/packages/",
-      "outputPath": "/home/kavita/EM/eslabs-storage/eslabs-storage/obj/",
+      "outputPath": "/home/kavita/eslabsroot/services/storage/eslabs-storage/obj/",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "/usr/share/dotnet/sdk/NuGetFallbackFolder"

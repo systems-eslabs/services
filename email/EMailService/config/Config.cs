@@ -16,7 +16,7 @@ namespace mailLibrary
 
         static Config()
         {
-            string JsonString = System.IO.File.ReadAllText("../Settings/settings.json");
+            string JsonString = System.IO.File.ReadAllText("./config/config.json");
             _config = JsonConvert.DeserializeObject<Dictionary<string, string>>(JsonString);
 
             setConfigurations();

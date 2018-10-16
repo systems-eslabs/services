@@ -65,9 +65,9 @@ namespace mailLibrary
 
     public static class FileType
     {
-        const string PDF = ".pdf";
-        const string XLS = ".xls";
-        const string XLSX = ".xlsx";
+       public const string PDF = ".pdf";
+       public const string XLS = ".xls";
+       public const string XLSX = ".xlsx";
     }
 
 

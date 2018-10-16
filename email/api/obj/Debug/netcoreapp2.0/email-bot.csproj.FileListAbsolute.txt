@@ -19,3 +19,13 @@
 /home/kavita/eslabsroot/email-bot/api/obj/Debug/netcoreapp2.0/email-bot.AssemblyInfo.cs
 /home/kavita/eslabsroot/email-bot/api/obj/Debug/netcoreapp2.0/email-bot.dll
 /home/kavita/eslabsroot/email-bot/api/obj/Debug/netcoreapp2.0/email-bot.pdb
+/home/kavita/eslabsroot/services/email/api/bin/Debug/netcoreapp2.0/email-bot.deps.json
+/home/kavita/eslabsroot/services/email/api/bin/Debug/netcoreapp2.0/email-bot.runtimeconfig.json
+/home/kavita/eslabsroot/services/email/api/bin/Debug/netcoreapp2.0/email-bot.runtimeconfig.dev.json
+/home/kavita/eslabsroot/services/email/api/bin/Debug/netcoreapp2.0/email-bot.dll
+/home/kavita/eslabsroot/services/email/api/bin/Debug/netcoreapp2.0/email-bot.pdb
+/home/kavita/eslabsroot/services/email/api/obj/Debug/netcoreapp2.0/email-bot.csproj.CoreCompileInputs.cache
+/home/kavita/eslabsroot/services/email/api/obj/Debug/netcoreapp2.0/email-bot.AssemblyInfoInputs.cache
+/home/kavita/eslabsroot/services/email/api/obj/Debug/netcoreapp2.0/email-bot.AssemblyInfo.cs
+/home/kavita/eslabsroot/services/email/api/obj/Debug/netcoreapp2.0/email-bot.dll
+/home/kavita/eslabsroot/services/email/api/obj/Debug/netcoreapp2.0/email-bot.pdb

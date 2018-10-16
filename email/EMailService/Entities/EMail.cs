@@ -9,6 +9,8 @@ namespace mailLibrary
     {
         public string MailId;
         public string TransactionId;
+
+        public bool HasValidAttachments = false;
         
     }
 }

@@ -19,7 +19,7 @@ using Google.Cloud.Storage.V1;
 
 namespace mailLibrary
 {
-    public abstract class Mail
+    public class Mail
     {
         static Dictionary<string, string> _settings = null;
         GmailService _service = null;
@@ -33,7 +33,7 @@ namespace mailLibrary
             GmailService.Scope.GmailCompose
             };
 
-        protected Mail()
+        public Mail()
         {
             _service = initailseEmailService();
         }
@@ -73,7 +73,7 @@ namespace mailLibrary
         public BaseReturn<List<Email>> getUnreadEmailsByLabel(string label)
         {
             BaseReturn<List<Email>> baseObject = new BaseReturn<List<Email>>();
-            List<Email> mails = null;
+            List<Email> mails = new List<Email>();
             try
             {
                 var inboxlistRequest = _service.Users.Messages.List("me");
@@ -92,9 +92,14 @@ namespace mailLibrary
                     });
 
                     _mails = mails;
-                    baseObject.Success = true;
-                    baseObject.Data = mails;
+
                 }
+                else
+                {
+                    baseObject.Message = "No new messages available";
+                }
+                baseObject.Success = true;
+                baseObject.Data = mails;
             }
             catch (Exception ex)
             {
@@ -183,15 +188,15 @@ namespace mailLibrary
                         var attachmentData = getAttachmentData(mailId, attachment.AttachmentId, attachment.Filename);
                         attachments.Add(attachmentData);
                     }
-                     baseObject.Success = true;
-                baseObject.Data = attachments;
+                    baseObject.Success = true;
+                    baseObject.Data = attachments;
                 }
                 else
                 {
                     baseObject.Success = false;
                     baseObject.Message = "mailId not available";
                 }
-               
+
             }
             catch (Exception ex)
             {
@@ -213,20 +218,20 @@ namespace mailLibrary
 
                 if (mail != null)
                 {
-                    foreach (EAttachment attachment in attachmentRequest)
+                    foreach (EAttachmentRequest attachment in attachmentRequest)
                     {
                         var attachmentData = getAttachmentData(mailId, attachment.AttachmentId, attachment.Filename);
                         attachments.Add(attachmentData);
                     }
-                     baseObject.Success = true;
-                baseObject.Data = attachments;
+                    baseObject.Success = true;
+                    baseObject.Data = attachments;
                 }
                 else
                 {
                     baseObject.Success = false;
                     baseObject.Message = "mailId not available";
                 }
-               
+
             }
             catch (Exception ex)
             {
@@ -264,8 +269,8 @@ namespace mailLibrary
                 From = PayLoadHeader.Single(mPart => mPart.Name == "From").Value,
                 To = Config.serviceMailId,
                 Subject = PayLoadHeader.Single(mPart => mPart.Name == "Subject").Value,
-                CC = PayLoadHeader.Single(mPart => mPart.Name == "Cc").Value, // handle if cc not mentioned
-                BCC = PayLoadHeader.Single(mPart => mPart.Name == "Bcc").Value, // handle if cc not mentioned
+                CC = PayLoadHeader.FirstOrDefault(mPart => mPart.Name == "Cc") == null ? "" : PayLoadHeader.FirstOrDefault(mPart => mPart.Name == "Cc").Value,
+                BCC = PayLoadHeader.FirstOrDefault(mPart => mPart.Name == "Bcc") == null ? "" : PayLoadHeader.FirstOrDefault(mPart => mPart.Name == "Bcc").Value,
                 Attachments = attachments
             };
             markMailUnread(emailInfoResponse.Id);
