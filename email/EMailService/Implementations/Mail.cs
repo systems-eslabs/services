@@ -15,6 +15,7 @@ using System.Threading.Tasks;
 using System.Net.Mail;
 using Google.Apis.Storage.v1;
 using Google.Cloud.Storage.V1;
+using Common;
 
 
 namespace mailLibrary
@@ -150,7 +151,7 @@ namespace mailLibrary
                     {
                         ThreadId = mail.MailId,
                         Id = mail.MailId,
-                        Raw = Common.Base64UrlEncode(msgStr.ToString())
+                        Raw = CommonFunctions.Base64UrlEncode(msgStr.ToString())
                     }, "me").Execute();
 
                     baseObject.Success = true;
@@ -290,7 +291,7 @@ namespace mailLibrary
                 Filename = Filename,
                 localUrl = "",
                 CloudUrl = "",
-                Data = attachPart != null ? Common.FromBase64ForString(attachPart.Data) : null
+                Data = attachPart != null ? CommonFunctions.FromBase64ForString(attachPart.Data) : null
             };
             return attachment;
         }
@@ -346,7 +347,7 @@ namespace mailLibrary
                 {
                     ThreadId = mail.MailId,
                     Id = mail.MailId,
-                    Raw = Common.Base64UrlEncode(msgStr.ToString())
+                    Raw = CommonFunctions.Base64UrlEncode(msgStr.ToString())
                 }, "me").Execute();
             }
         }

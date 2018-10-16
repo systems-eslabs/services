@@ -4,9 +4,9 @@ using System.IO;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 
-namespace common
+namespace Common
 {
-    public static partial class Common
+    public static class CommonFunctions
     {
         public static byte[] FromBase64ForUrlString(string base64ForUrlInput)
         {
