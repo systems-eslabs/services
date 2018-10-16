@@ -11,6 +11,12 @@ namespace StorageService
     public class Storage
     {
         //static readonly string[] StorageScope = { StorageService.Scope.DevstorageReadWrite };
+        string _folderPath;
+
+        public Storage(string folderPath)
+        {
+            _folderPath = folderPath;
+        }
 
         public BaseReturn<EStorageResponse> BinaryUpload(EStorageRequest storageRequest, byte[] data)
         {
@@ -82,11 +88,11 @@ namespace StorageService
             var credential = GoogleCredential.GetApplicationDefault();
             var client = StorageClient.Create(credential);
 
-            string bucketFileName = storageRequest.BucketName + "/" + storageRequest.FileName;
-            client.UploadObject(storageRequest.ProjectName, bucketFileName, getContentType(path), stream);
+            string bucketFileName = _folderPath + "/" + storageRequest.FileName; //eg. Email/{TransId}/{FileName}
+            client.UploadObject(Config.projectEnvironment, bucketFileName, getContentType(path), stream);
 
             objResposne.LocalFilePath = path;
-            objResposne.BucketFilePath = "https://storage.cloud.google.com/" + storageRequest.ProjectName + "/" + bucketFileName;
+            objResposne.BucketFilePath = "https://storage.cloud.google.com/" + Config.projectEnvironment + "/" + bucketFileName;
 
             if (!storageRequest.isSaveLocal)
             {
