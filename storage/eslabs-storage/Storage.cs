@@ -4,85 +4,100 @@ using Google.Apis.Storage.v1;
 using Google.Cloud.Storage.V1;
 using Google.Apis.Auth.OAuth2;
 using Microsoft.AspNetCore.Http;
+using Common;
 
-namespace eslabs_storage
+namespace StorageService
 {
     public class Storage
     {
-        static readonly string[] StorageScope = { StorageService.Scope.DevstorageReadWrite };
+        //static readonly string[] StorageScope = { StorageService.Scope.DevstorageReadWrite };
 
-        public StorageResposne BinaryUpload(string fileName, string bucketName, byte[] data, bool isSaveLocal)
+        public BaseReturn<EStorageResponse> BinaryUpload(EStorageRequest storageRequest, byte[] data)
         {
-            string path = RetrunFilePath(fileName, bucketName);
-
-            StorageResposne objResposne = new StorageResposne();
-
-            using (var stream = new FileStream(path, FileMode.Create))
+            BaseReturn<EStorageResponse> baseObject = new BaseReturn<EStorageResponse>();
+            EStorageResponse objResposne = null;
+            try
             {
-                stream.Write(data, 0, data.Length);
-                stream.Flush();
-
-                PushToCloudStorage(fileName, bucketName, isSaveLocal, path, objResposne, stream);
-
-                return objResposne;
+                string path = getLocalFilePath(storageRequest);
+                using (var stream = new FileStream(path, FileMode.Create))
+                {
+                    stream.Write(data, 0, data.Length);
+                    stream.Flush();
+                    objResposne = PushToCloudStorage(storageRequest, stream,path);
+                }
+                baseObject.Success = true;
+                baseObject.Data = objResposne;
             }
+            catch (Exception ex)
+            {
+                baseObject.Success = false;
+                baseObject.Message = "Error Occured!";
+                baseObject.Exception = ex;
+            }
+            return baseObject;
         }
 
-        private static string RetrunFilePath(string fileName, string bucketName)
+        public BaseReturn<EStorageResponse> FormDataUpload(EStorageRequest storageRequest, IFormFile file)
         {
-            string dirPath = Path.Combine(
-                         Directory.GetCurrentDirectory(), "wwwroot", bucketName);
+            BaseReturn<EStorageResponse> baseObject = new BaseReturn<EStorageResponse>();
+            EStorageResponse objResposne = null;
+            try
+            {
+                if (file != null && file.Length > 0)
+                {
+                    string path = getLocalFilePath(storageRequest);
+                    using (var stream = new FileStream(path, FileMode.Create))
+                    {
+                        file.CopyToAsync(stream);
+                        objResposne = PushToCloudStorage(storageRequest, stream, path);
+                    }
+                    baseObject.Success = true;
+                    baseObject.Data = objResposne;
+                }
+                else
+                {
+                    baseObject.Success = false;
+                    baseObject.Message = "File is empty.";
+                }
 
+            }
+            catch (Exception ex)
+            {
+                baseObject.Success = false;
+                baseObject.Message = "Error Occured!";
+                baseObject.Exception = ex;
+            }
+            return baseObject;
+        }
+
+        private string getLocalFilePath(EStorageRequest storageRequest)
+        {
+            string dirPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", storageRequest.BucketName);
             Directory.CreateDirectory(dirPath);
-
-            string path = Path.Combine(dirPath, fileName);
-            return path;
+            return Path.Combine(dirPath, storageRequest.FileName);
         }
 
-        public StorageResposne FormDataUpload(string fileName, string bucketName, IFormFile file, bool isSaveLocal)
+        private EStorageResponse PushToCloudStorage(EStorageRequest storageRequest, FileStream stream, string path)
         {
-            string path = RetrunFilePath(fileName, bucketName);
+            EStorageResponse objResposne = new EStorageResponse();
 
-            StorageResposne objResposne = new StorageResposne();
-
-            if (file == null || file.Length == 0)
-                return objResposne;
-
-            using (var stream = new FileStream(path, FileMode.Create))
-            {
-                file.CopyToAsync(stream);
-                PushToCloudStorage(fileName, bucketName, isSaveLocal, path, objResposne, stream);
-                return objResposne;
-            }
-
-        }
-
-        private void PushToCloudStorage(string fileName, string bucketName, bool isSaveLocal, string path, StorageResposne objResposne, FileStream stream)
-        {
-            GoogleCredential credential;
-            using (var gstream = new FileStream("client_secret.json", FileMode.Open, FileAccess.Read))
-            {
-                credential = GoogleCredential.FromStream(gstream)
-                    .CreateScoped(StorageScope);
-            }
-
+            var credential = GoogleCredential.GetApplicationDefault();
             var client = StorageClient.Create(credential);
 
-
-            string bucketFileName = bucketName + "/" + fileName;
-            var obj2 = client.UploadObject("elabs", bucketFileName, getFileStorageContext(path), stream);
-
+            string bucketFileName = storageRequest.BucketName + "/" + storageRequest.FileName;
+            client.UploadObject(storageRequest.ProjectName, bucketFileName, getContentType(path), stream);
 
             objResposne.LocalFilePath = path;
-            objResposne.BucketFilePath = "https://storage.cloud.google.com/elabs/" + bucketFileName;
+            objResposne.BucketFilePath = "https://storage.cloud.google.com/" + storageRequest.ProjectName + "/" + bucketFileName;
 
-            if (!isSaveLocal)
+            if (!storageRequest.isSaveLocal)
             {
                 File.Delete(path);
             }
+            return objResposne;
         }
-        
-        private string getFileStorageContext(string path)
+
+        private string getContentType(string path)
         {
             switch (Path.GetExtension(path).ToLower())
             {
