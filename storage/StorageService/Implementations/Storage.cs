@@ -23,7 +23,7 @@ namespace StorageService
                 {
                     stream.Write(data, 0, data.Length);
                     stream.Flush();
-                    objResposne = PushToCloudStorage(storageRequest, stream,path);
+                    objResposne = PushToCloudStorage(storageRequest, stream, path);
                 }
                 baseObject.Success = true;
                 baseObject.Data = objResposne;
@@ -97,11 +97,18 @@ namespace StorageService
 
         private string getContentType(string path)
         {
+            string contentype = "image/jpeg";
             switch (Path.GetExtension(path).ToLower())
             {
-                case "xlsx": return "application/vnd.ms-excel";
-                default: return "image/jpeg";
+                case "xlsx":
+                    contentype = "application/vnd.ms-excel";
+                    break;
+
+                default:
+                    contentype = "image/jpeg";
+                    break;
             }
+            return contentype;
         }
     }
 }
