@@ -1,0 +1,10 @@
+/home/kavita/eslabsroot/services/storage/StorageService/bin/Debug/netstandard2.0/StorageService.deps.json
+/home/kavita/eslabsroot/services/storage/StorageService/bin/Debug/netstandard2.0/StorageService.dll
+/home/kavita/eslabsroot/services/storage/StorageService/bin/Debug/netstandard2.0/StorageService.pdb
+/home/kavita/eslabsroot/services/storage/StorageService/bin/Debug/netstandard2.0/common.dll
+/home/kavita/eslabsroot/services/storage/StorageService/bin/Debug/netstandard2.0/common.pdb
+/home/kavita/eslabsroot/services/storage/StorageService/obj/Debug/netstandard2.0/StorageService.csproj.CoreCompileInputs.cache
+/home/kavita/eslabsroot/services/storage/StorageService/obj/Debug/netstandard2.0/StorageService.AssemblyInfoInputs.cache
+/home/kavita/eslabsroot/services/storage/StorageService/obj/Debug/netstandard2.0/StorageService.AssemblyInfo.cs
+/home/kavita/eslabsroot/services/storage/StorageService/obj/Debug/netstandard2.0/StorageService.dll
+/home/kavita/eslabsroot/services/storage/StorageService/obj/Debug/netstandard2.0/StorageService.pdb

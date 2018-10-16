@@ -1,7 +1,6 @@
 /home/kavita/eslabsroot/services/common/bin/Debug/netstandard2.0/common.deps.json
 /home/kavita/eslabsroot/services/common/bin/Debug/netstandard2.0/common.dll
 /home/kavita/eslabsroot/services/common/bin/Debug/netstandard2.0/common.pdb
-/home/kavita/eslabsroot/services/common/obj/Debug/netstandard2.0/common.csprojAssemblyReference.cache
 /home/kavita/eslabsroot/services/common/obj/Debug/netstandard2.0/common.csproj.CoreCompileInputs.cache
 /home/kavita/eslabsroot/services/common/obj/Debug/netstandard2.0/common.AssemblyInfoInputs.cache
 /home/kavita/eslabsroot/services/common/obj/Debug/netstandard2.0/common.AssemblyInfo.cs

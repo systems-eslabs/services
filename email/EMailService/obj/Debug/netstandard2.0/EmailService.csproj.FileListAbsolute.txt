@@ -3,10 +3,10 @@
 /home/kavita/eslabsroot/services/email/EMailService/bin/Debug/netstandard2.0/EmailService.pdb
 /home/kavita/eslabsroot/services/email/EMailService/bin/Debug/netstandard2.0/common.dll
 /home/kavita/eslabsroot/services/email/EMailService/bin/Debug/netstandard2.0/common.pdb
-/home/kavita/eslabsroot/services/email/EMailService/obj/Debug/netstandard2.0/EmailService.csprojAssemblyReference.cache
 /home/kavita/eslabsroot/services/email/EMailService/obj/Debug/netstandard2.0/EmailService.csproj.CoreCompileInputs.cache
 /home/kavita/eslabsroot/services/email/EMailService/obj/Debug/netstandard2.0/EmailService.AssemblyInfoInputs.cache
 /home/kavita/eslabsroot/services/email/EMailService/obj/Debug/netstandard2.0/EmailService.AssemblyInfo.cs
-/home/kavita/eslabsroot/services/email/EMailService/obj/Debug/netstandard2.0/EmailService.csproj.CopyComplete
 /home/kavita/eslabsroot/services/email/EMailService/obj/Debug/netstandard2.0/EmailService.dll
 /home/kavita/eslabsroot/services/email/EMailService/obj/Debug/netstandard2.0/EmailService.pdb
+/home/kavita/eslabsroot/services/email/EMailService/bin/Debug/netstandard2.0/StorageService.dll
+/home/kavita/eslabsroot/services/email/EMailService/bin/Debug/netstandard2.0/StorageService.pdb

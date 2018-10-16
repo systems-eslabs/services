@@ -13,10 +13,10 @@ using Google.Apis.Gmail.v1.Data;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Net.Mail;
-using Google.Apis.Storage.v1;
+using CloudStorageService = Google.Apis.Storage.v1;
 using Google.Cloud.Storage.V1;
 using Common;
-
+using StorageService;
 
 namespace EmailService
 {
@@ -26,7 +26,7 @@ namespace EmailService
         GmailService _service = null;
         List<Email> _mails = null;
 
-        static readonly string[] StorageScope = { StorageService.Scope.DevstorageReadWrite };
+        static readonly string[] StorageScope = { CloudStorageService.StorageService.Scope.DevstorageReadWrite };
 
         public static string[] Scopes = {
             GmailService.Scope.GmailReadonly,
@@ -276,18 +276,31 @@ namespace EmailService
         }
 
         // make method async
-        EAttachment getAttachmentData(string mailId, string AttachmentId, string Filename)
+        EAttachment getAttachmentData(string mailId, string attachmentId, string filename)
         {
             EAttachment attachment = null;
-            MessagePartBody attachPart = _service.Users.Messages.Attachments.Get("me", mailId, AttachmentId).Execute();
+            MessagePartBody attachPart = _service.Users.Messages.Attachments.Get("me", mailId, attachmentId).Execute();
+            byte[] attachmentData = CommonFunctions.FromBase64ForString(attachPart.Data);
+
+
+            StorageService.Storage storageService = new StorageService.Storage();
+
+            EStorageRequest request = new EStorageRequest{
+                FileName = filename,
+                BucketName = "elabs",
+                ProjectName = "enbloc",
+                isSaveLocal = true
+            };
+
+            BaseReturn<EStorageResponse> storageResponse =  storageService.BinaryUpload(request,attachmentData);
 
             attachment = new EAttachment
             {
-                AttachmentId = AttachmentId,
-                Filename = Filename,
-                localUrl = "",
-                CloudUrl = "",
-                Data = attachPart != null ? CommonFunctions.FromBase64ForString(attachPart.Data) : null
+                AttachmentId = attachmentId,
+                Filename = filename,
+                localUrl = storageResponse.Data.LocalFilePath,
+                CloudUrl = storageResponse.Data.BucketFilePath,
+                Data = attachPart != null ?  attachmentData: null
             };
             return attachment;
         }
