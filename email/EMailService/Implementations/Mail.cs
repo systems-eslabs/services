@@ -287,8 +287,6 @@ namespace EmailService
 
             EStorageRequest request = new EStorageRequest{
                 FileName = filename,
-                BucketName = "gmail",
-                ProjectName = "elabs",
                 isSaveLocal = true
             };
 

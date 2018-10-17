@@ -76,7 +76,7 @@ namespace StorageService
 
         private string getLocalFilePath(EStorageRequest storageRequest)
         {
-            string dirPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", storageRequest.BucketName);
+            string dirPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", _folderPath);
             Directory.CreateDirectory(dirPath);
             return Path.Combine(dirPath, storageRequest.FileName);
         }
