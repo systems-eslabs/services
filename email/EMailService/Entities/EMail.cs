@@ -8,7 +8,7 @@ namespace EmailService
     public class Email : EmailBase
     {
         public string MailId;
-        public string TransactionId;
+        public int TransactionId;
 
         public bool HasValidAttachments = false;
         

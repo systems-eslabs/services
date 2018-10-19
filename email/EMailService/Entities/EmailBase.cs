@@ -13,6 +13,8 @@ namespace EmailService
         public string CC;
         public string BCC;
         public string ReplyTo;
+
+        public string Date;
         public string Body;
         public List<EAttachment> Attachments;
     }

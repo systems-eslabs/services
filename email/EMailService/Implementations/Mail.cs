@@ -17,7 +17,7 @@ using CloudStorageService = Google.Apis.Storage.v1;
 using Google.Cloud.Storage.V1;
 using Common;
 using StorageService;
-
+using EmailEntities = EmailService.DbEntities;
 namespace EmailService
 {
     public class Mail
@@ -121,26 +121,37 @@ namespace EmailService
                     Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
                     var enc1252 = Encoding.GetEncoding(1252);
 
+                    mail.To = mail.From;
+                    mail.From = Config.serviceMailId;
+                    mail.Body = replymessage;
+
+
                     var msg = new AE.Net.Mail.MailMessage
                     {
                         Subject = "RE : " + mail.Subject,
-                        Body = replymessage,
+                        Body = mail.Body,
                         ContentType = "text/html",
-                        From = new MailAddress(Config.serviceMailId)
+                        From = new MailAddress(mail.From)
                     };
 
-                    msg.To.Add(new MailAddress(mail.From));
+                    msg.To.Add(new MailAddress(mail.To));
 
-                    msg.ReplyTo.Add(new MailAddress(Config.serviceMailId));
+                    msg.ReplyTo.Add(new MailAddress(mail.From));
 
                     mail.CC.Split(',').ToList().ForEach(addr =>
                     {
-                        msg.Cc.Add(new MailAddress(addr));
+                        if (addr.Trim() != "")
+                        {
+                            msg.Cc.Add(new MailAddress(addr));
+                        }
                     });
 
                     mail.BCC.Split(',').ToList().ForEach(addr =>
                     {
-                        msg.Bcc.Add(new MailAddress(addr));
+                        if (addr.Trim() != "")
+                        {
+                            msg.Bcc.Add(new MailAddress(addr));
+                        }
                     });
 
                     var msgStr = new StringWriter();
@@ -153,6 +164,7 @@ namespace EmailService
                         Raw = CommonFunctions.Base64UrlEncode(msgStr.ToString())
                     }, "me").Execute();
 
+                    saveReplyMailInfo(mail);
                     baseObject.Success = true;
                     baseObject.Data = true;
                 }
@@ -189,6 +201,7 @@ namespace EmailService
                     }
                     baseObject.Success = true;
                     baseObject.Data = attachments;
+                    saveMailAttachments(mail.TransactionId, attachments);
                 }
                 else
                 {
@@ -223,6 +236,7 @@ namespace EmailService
                     }
                     baseObject.Success = true;
                     baseObject.Data = attachments;
+                    saveMailAttachments(mail.TransactionId, attachments);
                 }
                 else
                 {
@@ -267,9 +281,12 @@ namespace EmailService
                 To = Config.serviceMailId,
                 Subject = PayLoadHeader.Single(mPart => mPart.Name == "Subject").Value,
                 CC = PayLoadHeader.FirstOrDefault(mPart => mPart.Name == "Cc") == null ? "" : PayLoadHeader.FirstOrDefault(mPart => mPart.Name == "Cc").Value,
-                BCC = PayLoadHeader.FirstOrDefault(mPart => mPart.Name == "Bcc") == null ? "" : PayLoadHeader.FirstOrDefault(mPart => mPart.Name == "Bcc").Value,
+                // BCC = PayLoadHeader.FirstOrDefault(mPart => mPart.Name == "Bcc") == null ? "" : PayLoadHeader.FirstOrDefault(mPart => mPart.Name == "Bcc").Value,
+                Date = PayLoadHeader.Single(mPart => mPart.Name == "Date").Value,
                 Attachments = attachments
             };
+
+            saveMailInfo(mail);
             markMailUnread(emailInfoResponse.Id);
 
             return mail;
@@ -283,14 +300,15 @@ namespace EmailService
             byte[] attachmentData = CommonFunctions.FromBase64ForString(attachPart.Data);
 
 
-            StorageService.Storage storageService = new StorageService.Storage("Email/"+mailId);
+            StorageService.Storage storageService = new StorageService.Storage("Email/" + mailId);
 
-            EStorageRequest request = new EStorageRequest{
+            EStorageRequest request = new EStorageRequest
+            {
                 FileName = filename,
                 isSaveLocal = true
             };
 
-            BaseReturn<EStorageResponse> storageResponse =  storageService.BinaryUpload(request,attachmentData);
+            BaseReturn<EStorageResponse> storageResponse = storageService.BinaryUpload(request, attachmentData);
 
             attachment = new EAttachment
             {
@@ -298,7 +316,7 @@ namespace EmailService
                 Filename = filename,
                 localUrl = storageResponse.Data.LocalFilePath,
                 CloudUrl = storageResponse.Data.BucketFilePath,
-                Data = attachPart != null ?  attachmentData: null
+                Data = attachPart != null ? attachmentData : null
             };
             return attachment;
         }
@@ -309,58 +327,6 @@ namespace EmailService
             _service.Users.Threads.Modify(markAsReadRequest, "me", mailId).Execute();
             return true;
         }
-
-        void sendMail(string mailId, string replymessage)
-        {
-            var mail = getMail(mailId);
-
-            if (mail != null)
-            {
-                Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
-                var enc1252 = Encoding.GetEncoding(1252);
-
-                var msg = new AE.Net.Mail.MailMessage
-                {
-                    Subject = mail.Subject,
-                    Body = mail.Body,
-                    ContentType = "text/html",
-                    From = new MailAddress(Config.serviceMailId)
-                };
-
-                mail.To.Split(',').ToList().ForEach(addr =>
-                {
-                    msg.To.Add(new MailAddress(addr));
-                });
-
-                mail.ReplyTo.Split(',').ToList().ForEach(addr =>
-                {
-                    msg.ReplyTo.Add(new MailAddress(addr));
-                });
-
-                mail.CC.Split(',').ToList().ForEach(addr =>
-                {
-                    msg.Cc.Add(new MailAddress(addr));
-                });
-
-                mail.BCC.Split(',').ToList().ForEach(addr =>
-                {
-                    msg.Bcc.Add(new MailAddress(addr));
-                });
-
-                var msgStr = new StringWriter();
-                msg.Save(msgStr);
-
-                var result = _service.Users.Messages.Send(new Message
-                {
-                    ThreadId = mail.MailId,
-                    Id = mail.MailId,
-                    Raw = CommonFunctions.Base64UrlEncode(msgStr.ToString())
-                }, "me").Execute();
-            }
-        }
-
-
-
 
         #region Async Operations
 
@@ -429,7 +395,51 @@ namespace EmailService
 
         void saveMailInfo(Email mail)
         {
-            //Save to firebase
+            var EmailEntity = new EMailRepository<EmailEntities.Email>().Add(new EmailEntities.Email()
+            {
+                Mailid = mail.MailId,
+                From = mail.From,
+                To = mail.To,
+                Cc = mail.CC,
+                Bcc = mail.BCC,
+                Subject = mail.Subject,
+                Date = mail.Date,
+                CreatedBy = 0
+            });
+
+            mail.TransactionId = EmailEntity.Id;
+        }
+
+        void saveReplyMailInfo(Email mail)
+        {
+            new EMailRepository<EmailEntities.Reply>().Add(new EmailEntities.Reply()
+            {
+                TransactionId = mail.TransactionId,
+                From = mail.From,
+                To = mail.To,
+                Cc = mail.CC,
+                Bcc = mail.BCC,
+                Subject = mail.Subject,
+                Date = mail.Date,
+                Body = mail.Body,
+                CreatedBy = 0
+            });
+
+
+        }
+
+        void saveMailAttachments(int transactionId, List<EAttachment> attachments)
+        {
+            List<EmailEntities.Attachment> lstEmailAttachments = attachments.Select(attachment => new EmailEntities.Attachment()
+            {
+                TransactionId = transactionId,
+                MailAttachmentId = attachment.AttachmentId,
+                CloudUrl = attachment.CloudUrl,
+                LocalUrl = attachment.localUrl,
+                CreatedBy = 0
+            }).ToList();
+
+            new EMailRepository<EmailEntities.Attachment>().AddRange(lstEmailAttachments);
         }
 
         #endregion

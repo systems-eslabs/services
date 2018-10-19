@@ -1,6 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Google.Apis.Gmail.v1" Version="*" />
@@ -10,9 +10,18 @@
     <PackageReference Include="AE.Net.Mail" Version="1.7.10.0" />
     <PackageReference Include="System.Text.Encoding.CodePages" Version="*" />
     <PackageReference Include="EPPlus.Core" Version="*" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="2.1.4" />
+    <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="2.1.2" />
+    <PackageReference Include="Pomelo.EntityFrameworkCore.MySql.Design" Version="1.1.2" />
   </ItemGroup>
+
+  <ItemGroup>
+    <DotNetCliToolReference Include="Microsoft.EntityFrameworkCore.Tools.DotNet" Version="2.0.3" />
+  </ItemGroup>
+
   <ItemGroup>
     <ProjectReference Include="..\..\common\common.csproj" />
+    <ProjectReference Include="..\..\repository\repository.csproj" />
     <ProjectReference Include="..\..\storage\StorageService\StorageService.csproj" />
   </ItemGroup>
 </Project>

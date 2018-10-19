@@ -1,0 +1,16 @@
+/home/kavita/eslabsroot/services/email/EMailService/bin/Debug/netcoreapp2.0/EmailService.deps.json
+/home/kavita/eslabsroot/services/email/EMailService/bin/Debug/netcoreapp2.0/EmailService.runtimeconfig.json
+/home/kavita/eslabsroot/services/email/EMailService/bin/Debug/netcoreapp2.0/EmailService.runtimeconfig.dev.json
+/home/kavita/eslabsroot/services/email/EMailService/bin/Debug/netcoreapp2.0/EmailService.dll
+/home/kavita/eslabsroot/services/email/EMailService/bin/Debug/netcoreapp2.0/EmailService.pdb
+/home/kavita/eslabsroot/services/email/EMailService/bin/Debug/netcoreapp2.0/common.dll
+/home/kavita/eslabsroot/services/email/EMailService/bin/Debug/netcoreapp2.0/repository.dll
+/home/kavita/eslabsroot/services/email/EMailService/bin/Debug/netcoreapp2.0/StorageService.dll
+/home/kavita/eslabsroot/services/email/EMailService/bin/Debug/netcoreapp2.0/common.pdb
+/home/kavita/eslabsroot/services/email/EMailService/bin/Debug/netcoreapp2.0/StorageService.pdb
+/home/kavita/eslabsroot/services/email/EMailService/bin/Debug/netcoreapp2.0/repository.pdb
+/home/kavita/eslabsroot/services/email/EMailService/obj/Debug/netcoreapp2.0/EmailService.csproj.CoreCompileInputs.cache
+/home/kavita/eslabsroot/services/email/EMailService/obj/Debug/netcoreapp2.0/EmailService.AssemblyInfoInputs.cache
+/home/kavita/eslabsroot/services/email/EMailService/obj/Debug/netcoreapp2.0/EmailService.AssemblyInfo.cs
+/home/kavita/eslabsroot/services/email/EMailService/obj/Debug/netcoreapp2.0/EmailService.dll
+/home/kavita/eslabsroot/services/email/EMailService/obj/Debug/netcoreapp2.0/EmailService.pdb
