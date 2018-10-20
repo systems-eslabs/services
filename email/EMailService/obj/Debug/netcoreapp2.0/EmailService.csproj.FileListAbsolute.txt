@@ -14,3 +14,5 @@
 /home/kavita/eslabsroot/services/email/EMailService/obj/Debug/netcoreapp2.0/EmailService.AssemblyInfo.cs
 /home/kavita/eslabsroot/services/email/EMailService/obj/Debug/netcoreapp2.0/EmailService.dll
 /home/kavita/eslabsroot/services/email/EMailService/obj/Debug/netcoreapp2.0/EmailService.pdb
+/home/kavita/eslabsroot/services/email/EMailService/obj/Debug/netcoreapp2.0/EmailService.csprojAssemblyReference.cache
+/home/kavita/eslabsroot/services/email/EMailService/obj/Debug/netcoreapp2.0/EmailService.csproj.CopyComplete

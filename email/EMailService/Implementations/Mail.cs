@@ -20,7 +20,7 @@ using StorageService;
 using EmailEntities = EmailService.DbEntities;
 namespace EmailService
 {
-    public class Mail
+    public class Mail : IDisposable
     {
         static Dictionary<string, string> _settings = null;
         GmailService _service = null;
@@ -445,6 +445,10 @@ namespace EmailService
         #endregion
 
 
+        public void Dispose()
+        {
+           // Console.WriteLine("mail service is disposed");
+        }
 
 
 
