@@ -24,7 +24,6 @@ namespace EmailService
     {
         static Dictionary<string, string> _settings = null;
         GmailService _service = null;
-        List<Email> _mails = null;
 
         static readonly string[] StorageScope = { CloudStorageService.StorageService.Scope.DevstorageReadWrite };
 
@@ -66,11 +65,6 @@ namespace EmailService
             return service;
         }
 
-        Email getMail(string mailId)
-        {
-            return _mails.Where(x => x.MailId == mailId).FirstOrDefault();
-        }
-
         public BaseReturn<List<Email>> getUnreadEmailsByLabel(string label)
         {
             BaseReturn<List<Email>> baseObject = new BaseReturn<List<Email>>();
@@ -91,9 +85,6 @@ namespace EmailService
                     {
                         mails.Add(getMailInfo(message));
                     });
-
-                    _mails = mails;
-
                 }
                 else
                 {
@@ -110,69 +101,60 @@ namespace EmailService
             return baseObject;
         }
 
-        public BaseReturn<bool> sendMailReply(string mailId, string replymessage)
+        public BaseReturn<bool> sendMailReply(Email mail, string replymessage)
         {
             BaseReturn<bool> baseObject = new BaseReturn<bool>();
             try
             {
-                var mail = getMail(mailId);
-                if (mail != null)
+                Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
+                var enc1252 = Encoding.GetEncoding(1252);
+
+                mail.To = mail.From;
+                mail.From = Config.serviceMailId;
+                mail.Body = replymessage;
+
+
+                var msg = new AE.Net.Mail.MailMessage
                 {
-                    Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
-                    var enc1252 = Encoding.GetEncoding(1252);
+                    Subject = "RE : " + mail.Subject,
+                    Body = mail.Body,
+                    ContentType = "text/html",
+                    From = new MailAddress(mail.From)
+                };
 
-                    mail.To = mail.From;
-                    mail.From = Config.serviceMailId;
-                    mail.Body = replymessage;
+                msg.To.Add(new MailAddress(mail.To));
 
+                msg.ReplyTo.Add(new MailAddress(mail.From));
 
-                    var msg = new AE.Net.Mail.MailMessage
-                    {
-                        Subject = "RE : " + mail.Subject,
-                        Body = mail.Body,
-                        ContentType = "text/html",
-                        From = new MailAddress(mail.From)
-                    };
-
-                    msg.To.Add(new MailAddress(mail.To));
-
-                    msg.ReplyTo.Add(new MailAddress(mail.From));
-
-                    mail.CC.Split(',').ToList().ForEach(addr =>
-                    {
-                        if (addr.Trim() != "")
-                        {
-                            msg.Cc.Add(new MailAddress(addr));
-                        }
-                    });
-
-                    mail.BCC.Split(',').ToList().ForEach(addr =>
-                    {
-                        if (addr.Trim() != "")
-                        {
-                            msg.Bcc.Add(new MailAddress(addr));
-                        }
-                    });
-
-                    var msgStr = new StringWriter();
-                    msg.Save(msgStr);
-
-                    var result = _service.Users.Messages.Send(new Message
-                    {
-                        ThreadId = mail.MailId,
-                        Id = mail.MailId,
-                        Raw = CommonFunctions.Base64UrlEncode(msgStr.ToString())
-                    }, "me").Execute();
-
-                    saveReplyMailInfo(mail);
-                    baseObject.Success = true;
-                    baseObject.Data = true;
-                }
-                else
+                mail.CC.Split(',').ToList().ForEach(addr =>
                 {
-                    baseObject.Success = false;
-                    baseObject.Message = "mailId not available";
-                }
+                    if (addr.Trim() != "")
+                    {
+                        msg.Cc.Add(new MailAddress(addr));
+                    }
+                });
+
+                mail.BCC.Split(',').ToList().ForEach(addr =>
+                {
+                    if (addr.Trim() != "")
+                    {
+                        msg.Bcc.Add(new MailAddress(addr));
+                    }
+                });
+
+                var msgStr = new StringWriter();
+                msg.Save(msgStr);
+
+                var result = _service.Users.Messages.Send(new Message
+                {
+                    ThreadId = mail.MailId,
+                    Id = mail.MailId,
+                    Raw = CommonFunctions.Base64UrlEncode(msgStr.ToString())
+                }, "me").Execute();
+
+                saveReplyMailInfo(mail);
+                baseObject.Success = true;
+                baseObject.Data = true;
             }
             catch (Exception ex)
             {
@@ -183,31 +165,22 @@ namespace EmailService
             return baseObject;
         }
 
-        public BaseReturn<List<EAttachment>> getAttachments(string mailId)
+        public BaseReturn<List<EAttachment>> getAttachments(Email mail)
         {
             List<EAttachment> attachments = null;
             BaseReturn<List<EAttachment>> baseObject = new BaseReturn<List<EAttachment>>();
             try
             {
                 attachments = new List<EAttachment>();
-                var mail = getMail(mailId);
 
-                if (mail != null)
+                foreach (EAttachment attachment in mail.Attachments)
                 {
-                    foreach (EAttachment attachment in mail.Attachments)
-                    {
-                        var attachmentData = getAttachmentData(mailId, attachment.AttachmentId, attachment.Filename);
-                        attachments.Add(attachmentData);
-                    }
-                    baseObject.Success = true;
-                    baseObject.Data = attachments;
-                    saveMailAttachments(mail.TransactionId, attachments);
+                    var attachmentData = getAttachmentData(mail, attachment.AttachmentId, attachment.Filename);
+                    attachments.Add(attachmentData);
                 }
-                else
-                {
-                    baseObject.Success = false;
-                    baseObject.Message = "mailId not available";
-                }
+                baseObject.Success = true;
+                baseObject.Data = attachments;
+                saveMailAttachments(mail.TransactionId, attachments);
 
             }
             catch (Exception ex)
@@ -218,31 +191,22 @@ namespace EmailService
             return baseObject;
         }
 
-        public BaseReturn<List<EAttachment>> getAttachments(string mailId, List<EAttachmentRequest> attachmentRequest)
+        public BaseReturn<List<EAttachment>> getAttachments(Email mail, List<EAttachmentRequest> attachmentRequest)
         {
             List<EAttachment> attachments = null;
             BaseReturn<List<EAttachment>> baseObject = new BaseReturn<List<EAttachment>>();
             try
             {
                 attachments = new List<EAttachment>();
-                var mail = getMail(mailId);
 
-                if (mail != null)
+                foreach (EAttachmentRequest attachment in attachmentRequest)
                 {
-                    foreach (EAttachmentRequest attachment in attachmentRequest)
-                    {
-                        var attachmentData = getAttachmentData(mailId, attachment.AttachmentId, attachment.Filename);
-                        attachments.Add(attachmentData);
-                    }
-                    baseObject.Success = true;
-                    baseObject.Data = attachments;
-                    saveMailAttachments(mail.TransactionId, attachments);
+                    var attachmentData = getAttachmentData(mail, attachment.AttachmentId, attachment.Filename);
+                    attachments.Add(attachmentData);
                 }
-                else
-                {
-                    baseObject.Success = false;
-                    baseObject.Message = "mailId not available";
-                }
+                baseObject.Success = true;
+                baseObject.Data = attachments;
+                saveMailAttachments(mail.TransactionId, attachments);
 
             }
             catch (Exception ex)
@@ -295,14 +259,14 @@ namespace EmailService
         }
 
         // make method async
-        EAttachment getAttachmentData(string mailId, string attachmentId, string filename)
+        EAttachment getAttachmentData(Email mail, string attachmentId, string filename)
         {
             EAttachment attachment = null;
-            MessagePartBody attachPart = _service.Users.Messages.Attachments.Get("me", mailId, attachmentId).Execute();
+            MessagePartBody attachPart = _service.Users.Messages.Attachments.Get("me", mail.MailId, attachmentId).Execute();
             byte[] attachmentData = CommonFunctions.FromBase64ForString(attachPart.Data);
 
 
-            StorageService.Storage storageService = new StorageService.Storage("Email/" + mailId);
+            StorageService.Storage storageService = new StorageService.Storage("Email/" + mail.MailId);
 
             EStorageRequest request = new EStorageRequest
             {
@@ -350,43 +314,10 @@ namespace EmailService
             return messages;
         }
 
-
         public async Task markMailUnreadAsync(string id)
         {
             var markAsReadRequest = new ModifyThreadRequest { RemoveLabelIds = new[] { "UNREAD" } };
             await _service.Users.Threads.Modify(markAsReadRequest, "me", id).ExecuteAsync();
-        }
-
-
-        public List<Email> getUnreadEmailsByLabelAsync(string label)
-        {
-            List<Email> mails = null;
-            try
-            {
-                var inboxlistRequest = _service.Users.Messages.List("me");
-                inboxlistRequest.LabelIds = label;
-                inboxlistRequest.IncludeSpamTrash = true;
-                inboxlistRequest.Q = "is:unread";
-
-                var emailListResponse = inboxlistRequest.Execute();
-
-                if (emailListResponse != null && emailListResponse.Messages != null)
-                {
-                    var messages = emailListResponse.Messages.ToList();
-                    messages.ForEach(message =>
-                    {
-                        mails.Add(getMailInfo(message));
-                    });
-
-                    _mails = mails;
-                }
-
-            }
-            catch (Exception ex)
-            {
-                //Some error Occured -- return false in basereturn Issucess
-            }
-            return mails;
         }
 
 
@@ -449,7 +380,7 @@ namespace EmailService
 
         public void Dispose()
         {
-           // Console.WriteLine("mail service is disposed");
+            // Console.WriteLine("mail service is disposed");
         }
 
 
