@@ -134,14 +134,6 @@ namespace EmailService
                     }
                 });
 
-                mail.BCC.Split(',').ToList().ForEach(addr =>
-                {
-                    if (addr.Trim() != "")
-                    {
-                        msg.Bcc.Add(new MailAddress(addr));
-                    }
-                });
-
                 var msgStr = new StringWriter();
                 msg.Save(msgStr);
 
