@@ -8,4 +8,3 @@
 /home/kavita/eslabsroot/services/repository/obj/Debug/netcoreapp2.0/repository.AssemblyInfo.cs
 /home/kavita/eslabsroot/services/repository/obj/Debug/netcoreapp2.0/repository.dll
 /home/kavita/eslabsroot/services/repository/obj/Debug/netcoreapp2.0/repository.pdb
-/home/kavita/eslabsroot/services/repository/obj/Debug/netcoreapp2.0/repository.csprojAssemblyReference.cache
