@@ -8,5 +8,8 @@
 /home/kavita/eslabsroot/services/storage/StorageService/obj/Debug/netstandard2.0/StorageService.AssemblyInfo.cs
 /home/kavita/eslabsroot/services/storage/StorageService/obj/Debug/netstandard2.0/StorageService.dll
 /home/kavita/eslabsroot/services/storage/StorageService/obj/Debug/netstandard2.0/StorageService.pdb
+<<<<<<< HEAD
 /home/kavita/eslabsroot/services/storage/StorageService/obj/Debug/netstandard2.0/StorageService.csprojAssemblyReference.cache
 /home/kavita/eslabsroot/services/storage/StorageService/obj/Debug/netstandard2.0/StorageService.csproj.CopyComplete
+=======
+>>>>>>> 9d20e936f416c0d3b55f9ddd7bc2cdcc98f6cb63
