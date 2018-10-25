@@ -1,3 +1,12 @@
 bin
 obj
 packages
+storage/StorageService/bin/Debug/netstandard2.0/common.pdb
+common/bin/Debug/netstandard2.0/common.dll
+common/bin/Debug/netstandard2.0/common.pdb
+common/obj/Debug/netstandard2.0/common.dll
+common/obj/Debug/netstandard2.0/common.pdb
+common/obj/Debug/netstandard2.0/common.csproj.CoreCompileInputs.cache
+email/EMailService/bin/Debug/netcoreapp2.0/common.dll
+email/EMailService/bin/Debug/netcoreapp2.0/common.pdb
+storage/StorageService/bin/Debug/netstandard2.0/common.dll
