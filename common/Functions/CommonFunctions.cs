@@ -6,7 +6,7 @@ using System.Runtime.Serialization.Formatters.Binary;
 
 namespace Common
 {
-    public static class CommonFunctions
+    public static partial class CommonFunctions
     {
         public static byte[] FromBase64ForUrlString(string base64ForUrlInput)
         {
