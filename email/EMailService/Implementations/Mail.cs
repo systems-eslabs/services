@@ -282,7 +282,7 @@ namespace EmailService
         bool markMailUnread(string mailId)
         {
             var markAsReadRequest = new ModifyThreadRequest { RemoveLabelIds = new[] { "UNREAD" } };
-            //_service.Users.Threads.Modify(markAsReadRequest, "me", mailId).Execute();
+            _service.Users.Threads.Modify(markAsReadRequest, "me", mailId).Execute();
             return true;
         }
 
