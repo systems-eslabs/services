@@ -11,21 +11,21 @@ namespace Common
         public static EConatinerChecksum calculateChecksum(string containerNo)
         {
             var containerArray = containerNo.Trim().ToCharArray();
-            int containerSum = 0;
+            double containerSum = 0;
             int containerDivision = 0;
             int checkDigit = -1;
             bool IsCheckSummatched = false;
 
             for (int i = 0; i < 10; i++)
             {
-                containerSum = containerSum + getAlphabetWeight(containerArray[i]) * (2 ^ i);
+                containerSum = containerSum + (getAlphabetWeight(containerArray[i]) * Math.Pow(2, i));
             }
 
-            containerDivision = containerSum / 11; // Round off towards zero
+            containerDivision = (int)(containerSum / 11); // Round off towards zero
             containerDivision = containerDivision * 11;
-            checkDigit = containerSum - containerDivision;
-
-            IsCheckSummatched = checkDigit == (int)containerArray[10] ? true : false;
+            checkDigit = (int)containerSum - containerDivision;
+            checkDigit = checkDigit > 9 ? 0 : checkDigit;
+            IsCheckSummatched = checkDigit == (int)Char.GetNumericValue(containerArray[10]) ? true : false;
 
             return new EConatinerChecksum
             {
@@ -74,50 +74,54 @@ namespace Common
                     charWeight = 21;
                     break;
                 case 'L':
-                    charWeight = 22;
-                    break;
-                case 'M':
                     charWeight = 23;
                     break;
-                case 'N':
+                case 'M':
                     charWeight = 24;
                     break;
-                case 'O':
+                case 'N':
                     charWeight = 25;
                     break;
-                case 'P':
+                case 'O':
                     charWeight = 26;
                     break;
-                case 'Q':
+                case 'P':
                     charWeight = 27;
                     break;
-                case 'R':
+                case 'Q':
                     charWeight = 28;
                     break;
-                case 'S':
+                case 'R':
                     charWeight = 29;
                     break;
-                case 'T':
+                case 'S':
                     charWeight = 30;
                     break;
-                case 'U':
+                case 'T':
                     charWeight = 31;
                     break;
-                case 'V':
+                case 'U':
                     charWeight = 32;
                     break;
-                case 'W':
-                    charWeight = 33;
-                    break;
-                case 'X':
+                case 'V':
                     charWeight = 34;
                     break;
-                case 'Y':
+                case 'W':
                     charWeight = 35;
                     break;
-                case 'Z':
+                case 'X':
                     charWeight = 36;
                     break;
+                case 'Y':
+                    charWeight = 37;
+                    break;
+                case 'Z':
+                    charWeight = 38;
+                    break;
+                default:
+                    charWeight = (int)Char.GetNumericValue(val);
+                    break;
+
             }
             return charWeight;
         }
